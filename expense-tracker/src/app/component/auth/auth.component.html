@@ -1,0 +1,61 @@
+<div class="d-flex justify-content-center align-items-center vh-100 m-5">
+    <div class="card p-4 shadow-lg" style="width: 350px;">
+      <h4 class="text-center mb-3">
+        <strong>Register</strong>
+      </h4>
+
+      <!-- Show API Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger text-center">
+        {{ errorMessage }}
+      </div>
+  
+      <form [formGroup]="FormsData" (ngSubmit)="onSubmit()">
+
+        <div class="mb-3">
+          <label for="fullName" class="form-label">Full Name:</label>
+          <input type="text" id="fullName" class="form-control" formControlName="fullName" />
+          <small *ngIf="FormsData.get('fullName')?.invalid && FormsData.get('fullName')?.touched" class="text-danger">
+            Full name is required.
+          </small>
+        </div>
+
+        <div class="mb-3">
+          <label for="username" class="form-label">Username:</label>
+          <input type="text" id="username" class="form-control" formControlName="username" />
+          <small *ngIf="FormsData.get('username')?.invalid && FormsData.get('username')?.touched" class="text-danger">
+            Username is required.
+          </small>
+        </div>
+  
+        <!-- Password Field -->
+        <div class="mb-3">
+          <label for="password" class="form-label">Password:</label>
+          <input type="password" id="password" class="form-control" formControlName="password" />
+          <small *ngIf="FormsData.get('password')?.invalid && FormsData.get('password')?.touched" class="text-danger">
+            Password is required.
+          </small>
+        </div>
+
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email:</label>
+          <input type="email" id="email" class="form-control" formControlName="email" />
+          <small *ngIf="FormsData.get('email')?.invalid && FormsData.get('email')?.touched" class="text-danger">
+            Email name is required.
+          </small>
+        </div>
+
+  
+        <button type="submit" class="btn btn-primary w-100" [disabled]="FormsData.invalid">
+          Register
+        </button>
+      </form>
+  
+      <div class="text-center mt-3">
+        <a routerLink="/login" class="text-primary">
+          Already have an account? Login here'
+        </a>
+      </div>
+    </div>
+  </div>
+  

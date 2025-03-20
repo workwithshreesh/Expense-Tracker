@@ -1,0 +1,107 @@
+<div class="container m-4">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" *ngIf="expenses.length > 0">
+    <div *ngFor="let expense of expenses;" class="col">
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-12"> <!-- Full-width card -->
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ expense.expenseName }}
+              </h5>
+              <p class="card-text">
+                {{ expense.expenseDescription }}
+              </p>
+              <p class="card-text">
+                <small class="text-muted">
+                  {{ expense.expenseDate }}
+                </small>
+                <strong class="text-primary ms-2">
+                  ₹{{ expense.expenseAmount }}
+                </strong>
+              </p>
+            </div>
+            <div class="card-footer d-flex justify-content-center align-items-center">
+              <button class="btn btn-sm btn-success m-2" data-bs-toggle="modal" data-bs-target="#updateModal"
+                (click)="openUpdateModal(expense)">Update</button>
+              <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                (click)="opendeleteModal(expense)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container d-flex flex-column justify-content-center align-items-center text-center" style="width:100%; height:100vh; background-color: #f8f9fa;" *ngIf="expenses.length == 0">
+  <h2 class="h2 text-danger fw-bold">No Records Found</h2>
+  <p class="text-muted">You don't have any expense records yet.</p>
+  <a class="btn btn-success mt-3 px-4 py-2 shadow" routerLink="/add-book">➕ Add New Expense</a>
+  <p class="mt-2 text-secondary">Click the button above to add a new record.</p>
+</div>
+
+
+
+
+
+<!-- Bootstrap Modal for Updating Expense -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateModalLabel">Update Expense</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="ExpenseForm">
+          <!-- expenseName Field -->
+          <div class="mb-3">
+            <label for="expenseName" class="form-label">Expense Name:</label>
+            <input type="text" id="expenseName" class="form-control" formControlName="expenseName" />
+            <small *ngIf="ExpenseForm.get('expenseName')?.invalid && ExpenseForm.get('expenseName')?.touched"
+              class="text-danger">
+              Expense Name is required (Min: 3 characters).
+            </small>
+          </div>
+
+          <!-- expenseAmount Field -->
+          <div class="mb-3">
+            <label for="expenseAmount" class="form-label">Expense Amount:</label>
+            <input type="number" id="expenseAmount" class="form-control" formControlName="expenseAmount" />
+            <small *ngIf="ExpenseForm.get('expenseAmount')?.invalid && ExpenseForm.get('expenseAmount')?.touched"
+              class="text-danger">
+              Expense Amount is required (Min: 3 characters).
+            </small>
+          </div>
+
+          <!-- expenseDate Field -->
+          <div class="mb-3">
+            <label for="expenseDate" class="form-label">Expense Date:</label>
+            <input type="date" id="expenseDate" class="form-control" formControlName="expenseDate" />
+            <small *ngIf="ExpenseForm.get('expenseDate')?.invalid && ExpenseForm.get('expenseDate')?.touched"
+              class="text-danger">
+              Expense Date is required.
+            </small>
+          </div>
+
+          <!-- expenseDescription Field -->
+          <div class="mb-3">
+            <label for="expenseDescription" class="form-label">Expense Description:</label>
+            <textarea id="expenseDescription" class="form-control" formControlName="expenseDescription"
+              rows="3"></textarea>
+            <small
+              *ngIf="ExpenseForm.get('expenseDescription')?.invalid && ExpenseForm.get('expenseDescription')?.touched"
+              class="text-danger">
+              Expense Description is required (Min: 10 characters).
+            </small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateExpense()" data-bs-dismiss="modal">Save
+          changes</button>
+      </div>
+    </div>
+  </div>
+</div>
