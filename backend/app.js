@@ -14,6 +14,8 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(express.json()); // ✅ Fix for parsing JSON body
+app.use(express.urlencoded({ extended: true })); // ✅ Fix for form data
 app.use("/auth",userAuth);
 app.use("/exp",userExpense);
 

@@ -74,7 +74,7 @@ const HandleLogin = async (req,res) => {
 
         const token = jwt.sign({"userId":user._id}, JWT_SECRET,{expiresIn: "1h"});
 
-        return res.status(200).json({message:token,"userId":user._id});
+        return res.status(200).json({message:token,"userId":user._id, "username":user.username});
 
     } catch (error){
         console.log(error,"error in login system");

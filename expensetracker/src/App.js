@@ -7,6 +7,7 @@ import EditExpense from "./components/EditExpense";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./context/ProtectedRoute"; // Import ProtectedRoute
 
 const App = () => {
   return (
@@ -15,11 +16,15 @@ const App = () => {
         <Navbar />
         <div className="container mt-4">
           <Routes>
-            <Route path="/" element={<ExpenseList />} />
-            <Route path="/add" element={<AddExpense />} />
-            <Route path="/edit/:id" element={<EditExpense />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+
+            {/* Protected routes - Only accessible if logged in */}
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<ExpenseList />} />
+              <Route path="/add" element={<AddExpense />} />
+              <Route path="/edit/:id" element={<EditExpense />} />
+            </Route>
           </Routes>
         </div>
       </AuthProvider>

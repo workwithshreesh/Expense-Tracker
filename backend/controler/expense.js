@@ -94,12 +94,12 @@ const DeleteExpense = async (req,res) => {
 const GetAllExpense = async (req,res) => {
     try{
 
-        const Expense = await Expense.find();
-        if(!Expense){
+        const Expenses = await Expense.find();
+        if(!Expenses){
             return res.status(404).json({message:"Bad Methods"});
         }
 
-        return res.status(200).json({message:Expense});
+        return res.status(200).json({message:Expenses});
 
     }catch(error){
         console.log(error, "error in get all Expense");
@@ -113,6 +113,7 @@ const getExpenseById = async (req,res) => {
     try{
 
         const Id = req.params.id;
+        console.log(Id)
 
         if(!Id){
             return res.status(404).json({message:"id is not provided"})

@@ -43,12 +43,13 @@ export const AuthProvider = ({ children }) => {
   
       console.log("Login response:", response.data);
   
-      const { message, userId } = response.data;
+      const { message, userId, username } = response.data;
       if (message) {
         const decodedUser = jwtDecode(message);
   
         sessionStorage.setItem("jwtmessage", message);
-        sessionStorage.setItem("userId",userId)
+        sessionStorage.setItem("userId",userId);
+        sessionStorage.setItem("username", username);
         sessionStorage.setItem("user", JSON.stringify(decodedUser));
   
         dispatch({ type: "LOGIN", payload: { user: decodedUser, message } });
@@ -62,6 +63,7 @@ export const AuthProvider = ({ children }) => {
       alert(error.response?.data?.message || "Login failed");
     }
   };
+
   
   
 
@@ -70,19 +72,22 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axios.post(`${API_BASE_URL}register`, userData);
       if (response.data.success) {
-        alert("Registration successful, please login.");
-        navigate("/login");
+        window.alert("Registration successful! Please login.");
+       
       }
     } catch (error) {
-      console.error("Registration Error:", error.response?.data?.message || error.message);
-      alert("Registration failed");
+      console.error("Registration Error:", error.response?.data?.message || error.message);   
+      throw new Error("Registration failed. Please try again.");
     }
   };
+  
 
   // Logout function
   const logout = () => {
     sessionStorage.removeItem("jwtmessage");
     sessionStorage.removeItem("user");
+    sessionStorage.removeItem("username");
+    sessionStorage.removeItem("userId")
     dispatch({ type: "LOGOUT" });
     navigate("/login");
   };
@@ -104,13 +109,14 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.get(`${API_BASE_URL}users`, {
         headers: { Authorization: `Bearer ${state.message}` },
       });
-      return response.data;
+      return response.data.user;
     } catch (error) {
       console.error("Error fetching users:", error.response?.data?.message || error.message);
     }
   };
 
-  // Auto logout if message expires
+
+
   useEffect(() => {
     if (state.message) {
       const decoded = jwtDecode(state.message);

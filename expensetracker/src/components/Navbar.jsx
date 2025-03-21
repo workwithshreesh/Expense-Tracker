@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  const username = sessionStorage.getItem("username")
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -14,7 +15,7 @@ const Navbar = () => {
             {user ? (
               <>
                 <li className="nav-item">
-                  <span className="nav-link text-white">Welcome, {user.name}</span>
+                  <span className="nav-link text-white">Welcome, {username}</span>
                 </li>
                 <li className="nav-item">
                   <button className="btn btn-danger" onClick={logout}>Logout</button>
